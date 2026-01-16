@@ -50,7 +50,7 @@ class _RedacteurInterfaceState extends State<RedacteurInterface> {
     });
   }
 
-  // MÉTHODE DE MODIFICATION (AU BON ENDROIT)
+  // ✏️ MÉTHODE DE MODIFICATION (AU BON ENDROIT)
   void _showEditDialog(Redacteur redacteur) {
     final TextEditingController nomCtrl =
         TextEditingController(text: redacteur.nom);
@@ -112,7 +112,25 @@ class _RedacteurInterfaceState extends State<RedacteurInterface> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.pink,
-        title: const Text('Gestion des rédacteurs'),
+        title: const Text(
+          'Gestion des rédacteurs',
+          style: TextStyle(color: 
+            Colors.white),
+        ),
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.menu),
+          onPressed: () {},
+          color: Colors.white,
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {},
+            color: Colors.white,
+          ),
+        ],
+        
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
