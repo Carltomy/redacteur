@@ -50,7 +50,7 @@ class _RedacteurInterfaceState extends State<RedacteurInterface> {
     });
   }
 
-  // ✏️ MÉTHODE DE MODIFICATION (AU BON ENDROIT)
+  // MÉTHODE DE MODIFICATION (AU BON ENDROIT)
   void _showEditDialog(Redacteur redacteur) {
     final TextEditingController nomCtrl =
         TextEditingController(text: redacteur.nom);
