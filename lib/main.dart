@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'database/database_manager.dart';
 import 'modele/redacteur.dart';
 
-
 void main() {
   runApp(const MonApplication());
 }
@@ -12,12 +11,10 @@ class MonApplication extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return(
-      MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title : 'Redacteur',
-        home: const RedacteurInterface(),
-      );
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Redacteur',
+      home: const RedacteurInterface(),
     );
   }
 }
@@ -30,7 +27,6 @@ class RedacteurInterface extends StatefulWidget {
 }
 
 class _RedacteurInterfaceState extends State<RedacteurInterface> {
-
   final TextEditingController _nomController = TextEditingController();
   final TextEditingController _prenomController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -50,14 +46,17 @@ class _RedacteurInterfaceState extends State<RedacteurInterface> {
     });
   }
 
-  // ✏️ MÉTHODE DE MODIFICATION (AU BON ENDROIT)
+  // MÉTHODE DE MODIFICATION (AU BON ENDROIT)
   void _showEditDialog(Redacteur redacteur) {
-    final TextEditingController nomCtrl =
-        TextEditingController(text: redacteur.nom);
-    final TextEditingController prenomCtrl =
-        TextEditingController(text: redacteur.prenom);
-    final TextEditingController emailCtrl =
-        TextEditingController(text: redacteur.email);
+    final TextEditingController nomCtrl = TextEditingController(
+      text: redacteur.nom,
+    );
+    final TextEditingController prenomCtrl = TextEditingController(
+      text: redacteur.prenom,
+    );
+    final TextEditingController emailCtrl = TextEditingController(
+      text: redacteur.email,
+    );
 
     showDialog(
       context: context,
@@ -114,8 +113,7 @@ class _RedacteurInterfaceState extends State<RedacteurInterface> {
         backgroundColor: Colors.pink,
         title: const Text(
           'Gestion des rédacteurs',
-          style: TextStyle(color: 
-            Colors.white),
+          style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
         leading: IconButton(
@@ -130,50 +128,83 @@ class _RedacteurInterfaceState extends State<RedacteurInterface> {
             color: Colors.white,
           ),
         ],
-        
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             TextField(
               controller: _nomController,
-              decoration: const InputDecoration(labelText: 'Nom'),
+              style: const TextStyle(fontSize: 16),
+              decoration: const InputDecoration(
+                labelText: 'Nom',
+                labelStyle: TextStyle(fontSize: 14),
+              ),
             ),
             const SizedBox(height: 10),
             TextField(
               controller: _prenomController,
-              decoration: const InputDecoration(labelText: 'Prénom'),
+              style: const TextStyle(fontSize: 16),
+              decoration: const InputDecoration(
+                labelText: 'Prénom',
+                labelStyle: TextStyle(fontSize: 14),
+              ),
             ),
             const SizedBox(height: 10),
             TextField(
               controller: _emailController,
-              decoration: const InputDecoration(labelText: 'Email'),
+              style: const TextStyle(fontSize: 16),
+              decoration: const InputDecoration(
+                labelText: 'Email',
+                labelStyle: TextStyle(fontSize: 14),
+              ),
             ),
             const SizedBox(height: 20),
 
-            ElevatedButton(
-              onPressed: () async {
-                final nom = _nomController.text;
-                final prenom = _prenomController.text;
-                final email = _emailController.text;
+            Center(
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.pink,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 40,
+                    vertical: 18,
+                  ),
+                ),
+                onPressed: () async {
+                  final nom = _nomController.text;
+                  final prenom = _prenomController.text;
+                  final email = _emailController.text;
 
-                if (nom.isEmpty || prenom.isEmpty || email.isEmpty) {
-                  return;
-                }
+                  if (nom.isEmpty || prenom.isEmpty || email.isEmpty) {
+                    return;
+                  }
 
-                final redacteur = Redacteur(nom, prenom, email);
-                await DatabaseManager().insertRedacteur(redacteur);
+                  final redacteur = Redacteur(nom, prenom, email);
+                  await DatabaseManager().insertRedacteur(redacteur);
 
-                _nomController.clear();
-                _prenomController.clear();
-                _emailController.clear();
+                  _nomController.clear();
+                  _prenomController.clear();
+                  _emailController.clear();
 
-                await _loadRedacteurs();
-              },
-              child: const Text('Ajouter un rédacteur'),
+                  await _loadRedacteurs();
+                },
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.add, color: Colors.white, size: 27),
+                    const SizedBox(width: 8),
+                    const Text(
+                      'Ajouter un rédacteur',
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
 
             const SizedBox(height: 20),
@@ -186,8 +217,17 @@ class _RedacteurInterfaceState extends State<RedacteurInterface> {
 
                   return Card(
                     child: ListTile(
-                      title: Text('${redacteur.nom} ${redacteur.prenom}'),
-                      subtitle: Text(redacteur.email),
+                      title: Text(
+                        '${redacteur.nom} ${redacteur.prenom}',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      subtitle: Text(
+                        redacteur.email,
+                        style: const TextStyle(fontSize: 14),
+                      ),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -200,8 +240,9 @@ class _RedacteurInterfaceState extends State<RedacteurInterface> {
                           IconButton(
                             icon: const Icon(Icons.delete, color: Colors.red),
                             onPressed: () async {
-                              await DatabaseManager()
-                                  .deleteRedacteur(redacteur.id!);
+                              await DatabaseManager().deleteRedacteur(
+                                redacteur.id!,
+                              );
                               await _loadRedacteurs();
                             },
                           ),
